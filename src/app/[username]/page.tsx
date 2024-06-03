@@ -4,8 +4,15 @@ import { env } from "@/env";
 import { createOAuthAppAuth } from "@octokit/auth-oauth-app";
 import UserPart from "@/app/[username]/UserPart";
 import Repo from "@/app/[username]/Repo";
+import { type Metadata } from "next";
+import { cookies } from "next/headers";
+import { GH_COOKIE_NAME } from "@/config";
 
-export const revalidate = 3600;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  return {
+    title: params.username + " github showcase",
+  };
+}
 
 type Props = {
   params: { username: string };
@@ -22,17 +29,19 @@ const ErrorComp: FC<{ error: unknown }> = ({ error }) => {
 };
 
 const Page: FC<Props> = async ({ params: { username } }) => {
-  const octokit = new Octokit({
-    request: {
-      fetch: (url: string, init: RequestInit | undefined) =>
-        fetch(url, { ...init, next: { revalidate: 3600 } }),
-    },
-    authStrategy: createOAuthAppAuth,
-    auth: {
-      clientId: env.NEXT_PUBLIC_GH_CLIENT_ID,
-      clientSecret: env.GH_CLIENT_SECRET,
-    },
-  });
+  const userToken = cookies().get(GH_COOKIE_NAME)?.value;
+
+  const octokit = userToken
+    ? new Octokit({
+        auth: userToken,
+      })
+    : new Octokit({
+        authStrategy: createOAuthAppAuth,
+        auth: {
+          clientId: env.NEXT_PUBLIC_GH_CLIENT_ID,
+          clientSecret: env.GH_CLIENT_SECRET,
+        },
+      });
 
   const userResult = await octokit
     .request("GET /users/{username}", {
@@ -59,7 +68,7 @@ const Page: FC<Props> = async ({ params: { username } }) => {
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-center py-12">
       <div className="grid w-[95dvw] max-w-5xl grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <div className="col-span-full flex gap-6 rounded-2xl bg-neutral-800 p-5">
+        <div className="col-span-full mb-8 flex flex-col items-center gap-6 rounded-2xl bg-neutral-800 p-5 md:flex-row">
           <UserPart data={userResult.data} />
         </div>
         {reposResult.data.map((el) => (

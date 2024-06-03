@@ -23,7 +23,7 @@ type Props = {
 const UserPart: FC<Props> = ({ data }) => {
   return (
     <>
-      <div className="relative flex items-center">
+      <div className="relative flex items-center justify-center">
         <Image
           className="h-auto w-auto rounded-full"
           src={data.avatar_url}
@@ -32,7 +32,7 @@ const UserPart: FC<Props> = ({ data }) => {
           alt={data.login}
         />
         {data.hireable ? (
-          <span className="absolute -right-3 top-1/2 translate-y-[50px] rounded bg-amber-500 p-1 font-mono font-bold leading-tight">
+          <span className="absolute left-1/2 top-1/2 translate-y-[50px] rounded bg-amber-500 p-1 font-mono font-bold leading-tight md:-right-3">
             hireable
           </span>
         ) : null}

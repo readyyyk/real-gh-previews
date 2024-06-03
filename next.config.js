@@ -12,7 +12,7 @@ const config = {
 
   experimental: {
     reactCompiler: true,
-    ppr: "incremental",
+    ppr: true,
     //     npm install babel-plugin-react-compiler --force
     //     npm install next@rc react@rc react-dom@rc --force
   },

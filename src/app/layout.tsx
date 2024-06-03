@@ -8,9 +8,10 @@ import { OctoKitContextProvider } from "@/components/OctoKitContext";
 import Profile from "@/app/Profile";
 
 export const metadata = {
-  title: "Custom auth Example ",
-  description: "T3 app with custom authentication example",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  title: "Real GitHub previews",
+  description:
+    "Show off your github public web projects with real preview instead of text",
+  icons: [{ rel: "icon", url: "/favicon.svg" }],
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

@@ -27,7 +27,7 @@ const ActualProfile: FC<{
       )}
     >
       <Link
-        href="/-/my/"
+        href="#"
         className={cn(
           open
             ? "h-auto w-auto text-xl underline opacity-100"
