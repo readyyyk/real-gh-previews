@@ -3,8 +3,8 @@ import { integer, text } from "drizzle-orm/sqlite-core";
 
 const image_source_variants = Object.freeze([
   "custom_link",
-  "from_readme",
-  "created_screenshot",
+  // "from_readme",
+  // "created_screenshot",
 ]) satisfies readonly [string, ...string[]];
 
 export const tbl_users = sqliteTable("users", {

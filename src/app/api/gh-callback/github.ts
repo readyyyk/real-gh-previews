@@ -24,8 +24,6 @@ export async function getAccessToken(code: string): Promise<Result> {
     headers: { Accept: "application/json" },
   }).then((a) => a.json())) as unknown;
 
-  console.log(result);
-
   const errorParsed = GHAuthRespErrorSchema.safeParse(result);
   if (errorParsed.success) {
     return { success: false, errorData: errorParsed.data };

@@ -3,6 +3,7 @@ import type { Endpoints } from "@octokit/types";
 import { ChevronDownIcon } from "lucide-react";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import DetailedRepoInfo from "@/app/[username]/DetailedRepoInfo";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Props = {
   data: Endpoints["GET /users/{username}/repos"]["response"]["data"][0];
@@ -56,6 +57,18 @@ const Repo: FC<Props> = ({ data, username }) => {
           </DialogTrigger>
           <DetailedRepoInfo data={data} iframeLink={iframeLink} />
         </Dialog>
+      </div>
+    </div>
+  );
+};
+
+export const RepoLoading: FC = () => {
+  return (
+    <div className="flex flex-col items-center">
+      {/*  176 x 320 */}
+      <Skeleton className="relative flex h-44 w-80 items-center justify-center overflow-clip rounded-xl border-2 border-neutral-600 font-mono font-bold"></Skeleton>
+      <div className="flex w-full justify-center">
+        <ChevronDownIcon className="h-8 opacity-50 hover:opacity-100" />
       </div>
     </div>
   );
