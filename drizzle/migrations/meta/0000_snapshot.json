@@ -1,0 +1,86 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "cb44b243-584a-46a4-a97a-1f40b4f63fdb",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "repos": {
+      "name": "repos",
+      "columns": {
+        "gh_repo_id": {
+          "name": "gh_repo_id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_gh_id": {
+          "name": "user_gh_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "image_source": {
+          "name": "image_source",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'default'"
+        },
+        "custom_link": {
+          "name": "custom_link",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "NULL"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "repos_user_gh_id_users_gh_id_fk": {
+          "name": "repos_user_gh_id_users_gh_id_fk",
+          "tableFrom": "repos",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_gh_id"
+          ],
+          "columnsTo": [
+            "gh_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "users": {
+      "name": "users",
+      "columns": {
+        "gh_id": {
+          "name": "gh_id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}

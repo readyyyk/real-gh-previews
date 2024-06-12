@@ -9,6 +9,9 @@ export const env = createEnv({
     server: {
         GH_CLIENT_SECRET: z.string(),
         DATABASE_URL: z.string().url(),
+        DATABASE_TOKEN: z.string().refine((value) => {
+            return process.env.NODE_ENV === 'development' || !!value;
+        }),
         NODE_ENV: z
             .enum(['development', 'test', 'production'])
             .default('development'),
@@ -31,6 +34,7 @@ export const env = createEnv({
         GH_CLIENT_SECRET: process.env.GH_CLIENT_SECRET,
         NODE_ENV: process.env.NODE_ENV,
         DATABASE_URL: process.env.DATABASE_URL,
+        DATABASE_TOKEN: process.env.DATABASE_TOKEN,
         NEXT_PUBLIC_GH_CLIENT_ID: process.env.NEXT_PUBLIC_GH_CLIENT_ID,
     },
     /**

@@ -6,10 +6,13 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from '@trpc/server';
+import { initTRPC, TRPCError } from '@trpc/server';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
 import { db } from '@/server/db';
+import { GH_COOKIE_NAME } from '@/config';
+import { Octokit } from '@octokit/rest';
+import type { Endpoints } from '@octokit/types';
 
 /**
  * 1. CONTEXT
@@ -25,6 +28,7 @@ import { db } from '@/server/db';
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
     return {
+        ...opts,
         db: db,
         cookies: (opts.headers.get('cookie') ?? '').split(';').reduce(
             (acc, value) => {
@@ -32,7 +36,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
             },
             new Map() as Map<string, string>,
         ),
-        ...opts,
+        user: null as null | Endpoints['GET /user']['response']['data'],
     };
 };
 
@@ -88,3 +92,28 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+
+export const privateProcedure = publicProcedure.use(async ({ ctx, next }) => {
+    const access_token = ctx.cookies.get(GH_COOKIE_NAME);
+
+    if (!access_token) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+    }
+
+    const userResult = await new Octokit({ auth: access_token })
+        .request('GET /user')
+        .catch((e) => ({ error: e as unknown }));
+
+    if ('error' in userResult) {
+        throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: String(userResult.error),
+        });
+    }
+
+    return next({
+        ctx: {
+            user: userResult.data,
+        },
+    });
+});

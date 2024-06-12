@@ -56,7 +56,9 @@ const Page: FC<Props> = async ({ params: { username } }) => {
         return <ErrorComp error={reposResult.error} />;
     }
 
-    const resourses = await api.repos.get_sources();
+    const resourses = await api.repos.get_sources({
+        user_id: userResult.data.id,
+    });
 
     console.warn('requests done');
 

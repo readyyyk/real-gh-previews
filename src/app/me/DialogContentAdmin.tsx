@@ -67,7 +67,9 @@ const DialogContentAdmin: FC<Props & { close: () => void }> = ({
             </DialogTitle>
 
             {!!error && (
-                <div className="flex justify-center"> {error.message} </div>
+                <div className="flex justify-center text-red-500">
+                    {error.message}
+                </div>
             )}
 
             <div className="relative flex aspect-[320/176] h-auto w-full flex-col items-center justify-center gap-3 overflow-clip rounded-xl border border-neutral-600 p-3">

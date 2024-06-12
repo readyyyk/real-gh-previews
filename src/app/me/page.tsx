@@ -39,7 +39,9 @@ const Page: FC = async () => {
         return <ErrorComp error={reposResult.error} />;
     }
 
-    const resourses = await api.repos.get_sources();
+    const resourses = await api.repos.get_sources({
+        user_id: userResult.data.id,
+    });
 
     const username = userResult.data.login;
 

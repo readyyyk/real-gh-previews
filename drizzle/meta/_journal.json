@@ -1,0 +1,13 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1718102910059,
+      "tag": "0000_volatile_hiroim",
+      "breakpoints": true
+    }
+  ]
+}
